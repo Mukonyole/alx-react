@@ -1,0 +1,12 @@
+{
+  "name": "0x04-React_inline_styling",
+  "version": "1.0.0",
+  "description": "In React, inline styles are not specified as a string. Instead they are specified with an object whose key is the camelCased version of the style name, and whose value is the style's value, usually a string (more on that later)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
