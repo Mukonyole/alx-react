@@ -1,16 +1,31 @@
+/**
+ * @jest-environment jsdom
+*/
 import React from 'react';
-import { shallow } from 'enzyme';
-import { expect } from 'chai';
+import { shallow, mount } from 'enzyme';
 import Footer from './Footer';
-import { getFooterCopy, getFullYear } from '../utils/utils';
+import { StyleSheetTestUtils } from 'aphrodite';
+import {AppContext, user, logOut} from '../App/AppContext';
 
-describe('Footer renders', () => {
-    it('Footer renders without crashing', () => {
-        const footerWrapper = shallow(<Footer />);
-        expect(footerWrapper.exists());
-    })
-    it('Footer renders a paragraph', () => {
-        const footerWrapper = shallow(<Footer />);
-        expect(footerWrapper.text()).contains(`Copyright ${getFullYear()} - ${getFooterCopy(true)}`);
-    })
-})
+beforeEach(() => {
+  StyleSheetTestUtils.suppressStyleInjection();
+});
+
+
+const wrapper = shallow(<AppContext.Provider><Footer/></AppContext.Provider>)
+describe('Footer component', () => {
+  it('renders without crashing', () => {
+    expect(wrapper.exists()).toBe(true)
+  })
+
+  it('renders the text “Copyright” when context is set to:(user defined, isLoggedIn is false and an email is set)', () => {
+    const wrapper = mount(<AppContext.Provider value={{currentUser: user, logOut:logOut}}><Footer/></AppContext.Provider>)
+    expect(wrapper.find('p').text()).toContain("Copyright");
+  })
+
+  it('renders the text "Contact us" when context is set to:( user defined, isLoggedIn is true and an email is set)', () => {
+    user.isLoggedIn = true
+    const wrapper = mount(<AppContext.Provider value={{currentUser: user, logOut:logOut}}><Footer/></AppContext.Provider>)
+    expect(wrapper.find('p').text()).toContain("Contact us");
+  })
+});

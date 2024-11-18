@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
   AppBody: {
     fontSize: '1.1rem',
     paddingLeft: 10,
-    margin: 0
+    margin: 0,
   },
   wrapper: {
     border: '2px solid #e1484c'
@@ -84,6 +84,11 @@ export default class App extends React.Component {
     window.removeEventListener('keydown', alert)
   }
 
+  markNotificationAsRead(id) {
+    const Notifications = this.state.listNotifications
+    this.setState({listNotifications: Notifications.filter((notif)=> id != notif.id )})
+  }
+
   render () {
     const currentUser = this.state.user
     const logOut = this.logOut
@@ -105,29 +110,25 @@ export default class App extends React.Component {
   }
   return (
     <AppContext.Provider value={{currentUser, logOut}}>
-      <Notifications
-            listNotifications={this.state.listNotifications}
-            displayDrawer={this.state.displayDrawer}
-            handleDisplayDrawer={this.handleDisplayDrawer} handleHideDrawer={this.handleHideDrawer}
-          />
-      <Header />
-      <hr className={css(styles.wrapper)}/>
-      <div className={css(styles.AppBody)}>
-        {LoginStatus()}
-        <BodySection title="News from the School">
-          <p>
-            News around the school!
-            News around the school!
-            News around the school!
-            News around the school!
-            News around the school!
-            News around the school!
-            News around the school!
-            News around the school!
-          </p>
-        </BodySection>
-      </div>
-      <Footer />
+      <>
+        <Notifications
+              listNotifications={this.state.listNotifications}
+              displayDrawer={this.state.displayDrawer}
+              handleDisplayDrawer={this.handleDisplayDrawer} handleHideDrawer={this.handleHideDrawer}
+              markNotificationAsRead={this.markNotificationAsRead}
+            />
+        <Header />
+        <hr className={css(styles.wrapper)}/>
+        <div className={css(styles.AppBody)}>
+          {LoginStatus()}
+          <BodySection title="News from the School">
+            <p>
+              A town hall different from bala blu, blue blu bulaba. broom broom broom brooooooooom. Bala blu blue blu bulaba. The farmers will make more money. Your lunch will not be imported, cassava garri ewa and ehhh ehhhhnn. The farmer will make money, the dinner would be cassava, eba, ewa and everything.
+            </p>
+          </BodySection>
+        </div>
+        <Footer />
+      </>
     </AppContext.Provider>
   );
   }
